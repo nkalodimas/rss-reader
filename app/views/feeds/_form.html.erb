@@ -1,0 +1,7 @@
+<%= form_for(@feed) do |f| %>
+  <div class="field">
+    <%= f.label :link , "Url" %>
+    <%= f.text_field :link %>
+    <%= f.submit class: 'btn btn-success btn-md' %>
+  </div>
+<% end %>

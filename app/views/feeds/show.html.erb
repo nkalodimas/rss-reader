@@ -1,0 +1,30 @@
+<div class="jumbotron">
+	<h3 class="text-info"><%= @feed.title %></h3>
+	<p><em class="text-info"><%= @feed.description %></em></p>
+</div>
+
+<%= link_to "<span class=\"glyphicon glyphicon-arrow-left\"></span> Back".html_safe, feeds_path, class: 'btn btn-info' %>
+
+<h3>Entries <span class="badge" id="unreadCount" ><%= @unread_entries_count %></span></h3>
+
+<table class="entriesTable table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Summary</th>
+      <th>Date</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @entries.each do |entry| %>
+      <tr <%= "class=\"unread info\" id=entry#{entry.id}".html_safe if entry.read == false %> >
+        <td class="col-md-5"><%= link_to entry.title, entry.link, target: "_blank", class: "entryLink", onclick: ("mark_as_read(#{@feed.id}, #{entry.id});" if entry.read == false) %></td>
+        <td class="col-md-5"><%= strip_tags entry.summary %></td>
+        <td class="col-md-2"><%= entry.pub_date.localtime.to_formatted_s(:short) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @entries %>

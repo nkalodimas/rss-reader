@@ -1,0 +1,55 @@
+<%= link_to "Subscribe to feed <span class=\"glyphicon glyphicon-plus\"></span>".html_safe, new_feed_path, class: 'btn btn-success btn-default' %>
+<br/>
+
+<h3>My Feeds</h3>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Link</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @feeds.each do |feed| %>
+      <tr>
+        <td class="col-md-5"><%= feed.title %></td>
+        <td class="col-md-5"><%= feed.link %></td>
+        <td class="col-md-1"><%= link_to 'Show', feed %></td>
+        <td class="col-md-1"><%= link_to 'Unsubscribe', unsubscribe_feed_path(feed), :method=> :post, class: 'btn btn-danger btn-xs' %></td>
+        <!-- <td><%= link_to 'Edit', edit_feed_path(feed) %></td> -->
+        <!-- <td><%= link_to 'Destroy', feed, method: :delete, data: { confirm: 'Are you sure?' } %></td> -->
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<hr/>
+
+<h3>All Entries <span class="badge" id="unreadCount"><%= @unread_entries_count %></span></h3>
+
+<table class="entriesTable table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Summary</th>
+      <th>Date</th>
+      <th>Feed</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @entries.each do |entry| %>
+      <tr <%= "class=\"unread info\" id=entry#{entry.id}".html_safe if entry.read == false %> >
+        <td class="col-md-4"><%= link_to entry.title, entry.link, target: "_blank", class: "entryLink", onclick: ("mark_as_read(#{entry.feed.id}, #{entry.id});" if entry.read == false) %></td>
+        <td class="col-md-5"><%= strip_tags entry.summary %></td>
+        <td class="col-md-2"><%= entry.pub_date.localtime.to_formatted_s(:short) %></td>
+        <td class="col-md-1"><%= link_to entry.feed.title, entry.feed %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @entries %>

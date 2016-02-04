@@ -1,0 +1,33 @@
+<h3>Subscribe to new Feed</h3>
+
+<%= render 'form' %>
+
+<hr/>
+
+<h3>Subscribe to existing feeds</h3>
+
+<table class="table table-striped" >
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Subscribers</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @feeds.each do |feed| %>
+      <tr>
+        <td><%= link_to feed.title, feed.link %></td>
+        <td><%= feed.description %></td>
+        <td class="text-center" ><%= feed.subscribers_count %></td>
+        <td><%= link_to 'Subscribe', subscribe_feed_path(feed), :method=> :post, class: 'btn btn-success btn-sm' unless @user_feeds_ids.include? feed.id%></td>
+        <!-- <td><%= link_to 'Edit', edit_feed_path(feed) %></td> -->
+        <!-- <td><%= link_to 'Destroy', feed, method: :delete, data: { confirm: 'Are you sure?' } %></td> -->
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br/>
+<%= link_to "<span class=\"glyphicon glyphicon-arrow-left\"></span> Back".html_safe, feeds_path, class: 'btn btn-info' %>
